@@ -1,0 +1,196 @@
+#include <iostream>
+#include <cstring>
+#include <fstream>
+#include <vector>
+#include <map>
+using namespace std;
+
+/* ===================== GLOBAL CONSTANTS ===================== */
+const int BUFFER_LIMIT = 8;
+const int MEMORY_THRESHOLD = 80;
+const double CPU_THRESHOLD = 2.0;
+
+/* ===================== UTILITY FUNCTION ===================== */
+void printLine() {
+    cout << "--------------------------------------------------\n";
+}
+
+/* ===================== BUFFER OVERFLOW MODULE ===================== */
+void bufferOverflowSimulation() {
+    printLine();
+    cout << "[MODULE] Buffer Overflow Simulation\n";
+
+    char buffer[BUFFER_LIMIT];
+    cout << "Enter input (max 8 characters): ";
+    cin >> buffer;   // intentionally unsafe
+
+    cout << "Stored Data: " << buffer << endl;
+
+    if (strlen(buffer) > BUFFER_LIMIT) {
+        cout << "[ALERT] Buffer Overflow Detected!\n";
+    } else {
+        cout << "[INFO] Input within safe limit\n";
+    }
+}
+
+/* ===================== TRAPDOOR MODULE ===================== */
+void trapdoorSimulation() {
+    printLine();
+    cout << "[MODULE] Trapdoor (Backdoor) Simulation\n";
+
+    char username[20], password[20];
+    cout << "Username: ";
+    cin >> username;
+    cout << "Password: ";
+    cin >> password;
+
+    if (strcmp(username, "shreesti") == 0 &&
+        strcmp(password, "shreesti123") == 0) {
+        cout << "[ALERT] Trapdoor Access Granted!\n";
+    } else {
+        cout << "[INFO] Authentication Failed\n";
+    }
+}
+
+/* ===================== CACHE POISONING MODULE ===================== */
+void cachePoisoningSimulation() {
+    printLine();
+    cout << "[MODULE] Cache Poisoning Simulation\n";
+
+    string domain = "example.com";
+    string originalIP = "93.184.216.34";
+    string poisonedIP = "192.168.1.100";
+
+    cout << "Original Cache:\n";
+    cout << domain << " -> " << originalIP << endl;
+
+    cout << "[WARNING] Cache Entry Modified!\n";
+    cout << domain << " -> " << poisonedIP << endl;
+}
+
+/* ===================== SYSTEM MONITORING MODULE ===================== */
+double getCPULoad() {
+    ifstream file("/proc/loadavg");
+    double load;
+    file >> load;
+    return load;
+}
+
+void systemMonitoring() {
+    printLine();
+    cout << "[MODULE] System Monitoring\n";
+
+    double cpuLoad = getCPULoad();
+    cout << "CPU Load: " << cpuLoad << endl;
+
+    if (cpuLoad > CPU_THRESHOLD) {
+        cout << "[ALERT] High CPU Usage Detected!\n";
+    } else {
+        cout << "[INFO] CPU Usage Normal\n";
+    }
+}
+
+/* ===================== ANOMALY DETECTION MODULE ===================== */
+void anomalyDetection() {
+    printLine();
+    cout << "[MODULE] Anomaly Detection\n";
+
+    int memoryUsage = 90;   // simulated value
+    cout << "Memory Usage: " << memoryUsage << "%\n";
+
+    if (memoryUsage > MEMORY_THRESHOLD) {
+        cout << "[ALERT] Anomalous Memory Usage Detected!\n";
+        cout << "Possible Cause: Buffer Overflow or Malware\n";
+    } else {
+        cout << "[INFO] Memory Usage Normal\n";
+    }
+}
+
+/* ===================== MITIGATION MODULE ===================== */
+void mitigation(const string& vulnerability) {
+    printLine();
+    cout << "[MODULE] Mitigation & Prevention\n";
+
+    map<string, vector<string>> fixes;
+
+    fixes["Buffer Overflow"] = {
+        "Use bounds checking",
+        "Avoid unsafe functions like gets()",
+        "Enable ASLR"
+    };
+
+    fixes["Trapdoor"] = {
+        "Remove hardcoded credentials",
+        "Audit authentication logic"
+    };
+
+    fixes["Cache Poisoning"] = {
+        "Flush cache",
+        "Enable DNSSEC",
+        "Validate DNS responses"
+    };
+
+    if (fixes.count(vulnerability)) {
+        cout << "Mitigation steps for " << vulnerability << ":\n";
+        for (auto &step : fixes[vulnerability]) {
+            cout << "- " << step << endl;
+        }
+    } else {
+        cout << "No mitigation available\n";
+    }
+}
+
+/* ===================== MAIN CONTROLLER ===================== */
+int main() {
+    int choice;
+
+    while (true) {
+        printLine();
+        cout << " Security Vulnerability Detection Framework\n";
+        printLine();
+
+        cout << "1. Buffer Overflow Simulation\n";
+        cout << "2. Trapdoor Simulation\n";
+        cout << "3. Cache Poisoning Simulation\n";
+        cout << "4. System Monitoring\n";
+        cout << "5. Anomaly Detection\n";
+        cout << "6. Exit\n";
+
+        cout << "Enter your choice: ";
+        cin >> choice;
+
+        switch (choice) {
+            case 1:
+                bufferOverflowSimulation();
+                mitigation("Buffer Overflow");
+                break;
+
+            case 2:
+                trapdoorSimulation();
+                mitigation("Trapdoor");
+                break;
+
+            case 3:
+                cachePoisoningSimulation();
+                mitigation("Cache Poisoning");
+                break;
+
+                
+            case 4:
+                systemMonitoring();
+                break;
+
+            case 5:
+                anomalyDetection();
+                mitigation("Buffer Overflow");
+                break;
+
+            case 6:
+                cout << "Exiting Framework...\n";
+                return 0;
+
+            default:
+                cout << "Invalid choice! Try again.\n";
+        }
+    }
+}
